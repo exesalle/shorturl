@@ -29,7 +29,7 @@ const SignUp:FC = () => {
       await updateProfile(res.user,{
         displayName: userData.name
       });
-      push('/profile');
+      push('/profile'+userData.email);
     } catch (error:any){
       error.message && setError(error.message);
     }
