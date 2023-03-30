@@ -34,7 +34,7 @@ const SignIn:FC = () => {
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(userData.email, userData.password);
-      push('/profile');
+      push('/profile/'+userData.email);
     } catch (error:any) {
       console.log(error.message);
     }

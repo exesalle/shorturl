@@ -5,7 +5,7 @@ import {InitialShortedLinks, IShortedLinks, IUserData} from '../Types';
 import {CurrentUser} from '../state/useAuthState';
 import {Button, Input, Space} from 'antd';
 import {useAuthState} from 'react-firebase-hooks/auth';
-
+import {useParams} from 'react-router-dom';
 
 const Profile:React.FC = () => {
 
@@ -14,11 +14,11 @@ const Profile:React.FC = () => {
     link: '',
     short: '',
   });
-
+  const {id} = useParams() as any;
   const [linksList, setLinksList] = useState<IShortedLinks[]>(InitialShortedLinks);
   const [shortID,setShortID] = useState('');
   const [user, loading, error] = useAuthState(auth);
-  const [userEmail, setUserEmail] = useState('user@user.com');
+  const [userEmail, setUserEmail] = useState(id);
 
   const email = () => {
     if (user) {
@@ -47,9 +47,9 @@ const Profile:React.FC = () => {
   };
 
   const addLink = async () => {
-    hashCode();
+    await hashCode();
     try {
-      await setDoc(doc(db, userEmail+'/', shortID+'/'), {
+      await setDoc(doc(db, userEmail, shortID), {
         id: Date.now(),
         link: linksData.link,
         short: shortID
