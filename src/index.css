@@ -24,6 +24,7 @@ code {
     background: rgba(209, 204, 224, 0.42);
   }
   td, th {
+    display: flex;
     padding: 10px;
   }
 }

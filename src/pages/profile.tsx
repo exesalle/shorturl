@@ -19,16 +19,7 @@ const Profile:React.FC = () => {
   const [shortID,setShortID] = useState('');
   const [user, loading, error] = useAuthState(auth);
   const [userEmail, setUserEmail] = useState(id);
-
-  const email = () => {
-    if (user) {
-
-      // @ts-ignore
-      setUserEmail(user.email.toString);
-    }
-
-  };
-
+  const [newLink, setNewLink] = useState('');
 
   const hashCode = () => {
     let code  = '';
@@ -50,6 +41,11 @@ const Profile:React.FC = () => {
     await hashCode();
     try {
       await setDoc(doc(db, userEmail, shortID), {
+        id: Date.now(),
+        link: linksData.link,
+        short: shortID
+      });
+      await setDoc(doc(db, 'links', shortID), {
         id: Date.now(),
         link: linksData.link,
         short: shortID
@@ -90,14 +86,18 @@ const Profile:React.FC = () => {
       </Space.Compact>
       <table className="table">
         <tr>
-          <th>link</th>
-          <th>shorted link</th>
+          <th>Link</th>
+          <th>Shorted link</th>
+          <th>Редактировать</th>
         </tr>
         {linksList.map(el =>
           <tr key={el.id}>
             <td>{el.link}</td>
             <td>localhost:3000/{el.short}</td>
-            <td><Button type="primary">Редактировать</Button></td>
+            <td>
+              <Space.Compact>
+                <Input addonBefore="Новая ссылка:" placeholder="Введите новую ссылку..." onChange={(e) => setNewLink( e.target.value)} allowClear />
+                <Button type="primary">Изменить</Button></Space.Compact></td>
             <td><Button type="primary" onClick={() => {deleteLink(el.short);}}> Удалить</Button></td>
           </tr>)}
       </table>
