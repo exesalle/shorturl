@@ -6,7 +6,6 @@ const Login = () => {
   return (
     <>
       <SignIn/>
-      <p>Нет аккаунта?<Link to="/registration">Зарегистрируйтесь</Link></p>
     </>
   );
 };

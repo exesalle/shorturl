@@ -3,7 +3,7 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import {IUserData} from '../Types';
 import {auth} from '../firebase';
 import {createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 const onFinish = (values: any) => {
   console.log('Success:', values);
@@ -37,6 +37,7 @@ const SignUp:FC = () => {
 
   return (
     <>
+      Регистрация
       <Form
         name="basic"
         labelCol={{ span: 8 }}
@@ -85,6 +86,9 @@ const SignUp:FC = () => {
         </Form.Item>
       </Form>
       <p>{error && <p>{error}</p>}</p>
+      <p>
+        У вас уже есть аккаунт? <Link to="/login">Войти</Link>
+      </p>
     </>
   );
 };

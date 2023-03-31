@@ -1,7 +1,7 @@
 import React, {FC, useState} from 'react';
 import {useSignInWithEmailAndPassword} from 'react-firebase-hooks/auth';
 import {auth} from '../firebase';
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {IUserData} from '../Types';
 import {Button, Form, Input} from 'antd';
 
@@ -41,7 +41,7 @@ const SignIn:FC = () => {
   };
 
   return (
-    <>
+    <>Вход
       <Form
         name="basic"
         labelCol={{ span: 8 }}
@@ -80,6 +80,7 @@ const SignIn:FC = () => {
         </Form.Item>
       </Form>
       <p>{error && <p>{error.message}</p>}</p>
+      <p>Нет аккаунта?<Link to="/registration">Зарегистрируйтесь</Link></p>
     </>
   );
 };
