@@ -6,8 +6,15 @@ import {CurrentUser} from '../state/useAuthState';
 import {Button, Input, Space} from 'antd';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useParams} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchLinks} from '../thunks';
+import {RootState} from '../store/store';
 
 const Profile:React.FC = () => {
+
+
+  const dispatch = useDispatch();
+  const links = useSelector((state: RootState) => state.Reducer.links);
 
   const [linksData, setLinksData] = useState<IShortedLinks>({
     id: 1,
@@ -37,27 +44,27 @@ const Profile:React.FC = () => {
     displayLinks();
   };
 
-  const addLink = async () => {
+
+
+
+  const addLink = async (userEmail:string, shortID:string, link: string) => {
     await hashCode();
     try {
       await setDoc(doc(db, userEmail, shortID), {
         id: Date.now(),
-        link: linksData.link,
+        link: link,
         short: shortID
       });
       await setDoc(doc(db, 'links', shortID), {
         id: Date.now(),
-        link: linksData.link,
+        link: link,
         short: shortID
       });
 
     } catch (e) {
       console.log(e);
     }
-    displayLinks();
   };
-
-
 
   const displayLinks = async () => {
     const linksCollection = query(collection(db, userEmail+''));
@@ -72,7 +79,7 @@ const Profile:React.FC = () => {
 
   useEffect(() => {
     return () => {
-      displayLinks();
+      dispatch(fetchLinks());
     };
   }, []);
 
@@ -82,7 +89,8 @@ const Profile:React.FC = () => {
       <CurrentUser/>
       <Space.Compact>
         <Input addonBefore="Link:" placeholder="Введите ссылку..." value={linksData.link} onChange={(e) => setLinksData({...linksData, link: e.target.value})} allowClear />
-        <Button type="primary" onClick={addLink}>Сократить</Button>
+        <Button type="primary" onClick={(e) => {
+          addLink(id, 'kjjjj',linksData.link);}}>Сократить</Button>
       </Space.Compact>
       <table className="table">
         <tr>
@@ -90,7 +98,7 @@ const Profile:React.FC = () => {
           <th>Shorted link</th>
           <th>Редактировать</th>
         </tr>
-        {linksList.map(el =>
+        {links.map(el =>
           <tr key={el.id}>
             <td>{el.link}</td>
             <td>localhost:3000/{el.short}</td>
