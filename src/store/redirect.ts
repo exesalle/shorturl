@@ -1,7 +1,5 @@
 import {ActionTypes} from '../Types';
 
-
-
 const initialState = {
   link: null,
 };

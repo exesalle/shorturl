@@ -1,11 +1,9 @@
-import React, {FC, useState} from 'react';
-import { Button, Checkbox, Form, Input } from 'antd';
+import React, {useState} from 'react';
+import { Button, Form, Input } from 'antd';
 import {IUserData} from '../Types';
-import {auth} from '../firebase';
-import {createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
-import {Link, Navigate, useNavigate} from 'react-router-dom';
+import {Link, Navigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-import {register} from '../thunks/index';
+import {register} from '../thunks';
 import {RootState} from '../store/store';
 
 const SignUp:React.FC = () => {

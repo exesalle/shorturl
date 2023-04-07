@@ -1,11 +1,6 @@
 import React, {FC, useEffect} from 'react';
-import {Link, useParams} from 'react-router-dom';
-import {collection, getDocs, getDoc,doc, query, onSnapshot, where} from 'firebase/firestore';
-import {db} from '../firebase';
-import {useDispatch, useSelector} from 'react-redux';
-import {redirectLink} from '../thunks';
-import {RootState} from '../store/store';
-import {redirectLink_success} from '../store/redirect';
+import {useParams} from 'react-router-dom';
+
 
 const ShortedLink:FC = () => {
   const {id} = useParams() as any;

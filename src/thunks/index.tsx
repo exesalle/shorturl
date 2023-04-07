@@ -52,10 +52,7 @@ export const addLink = (link:string):any => {
       .post('http://localhost:5000/api/v1/short',{
         origin: link
       })
-      .then((res) => dispatch(addLink_success(res)))
-      .catch((err) => {
-        'empty';
-      });
+      .then((res) => dispatch(addLink_success(res)));
   };
 };
 

@@ -1,10 +1,8 @@
-import React, {FC, useEffect, useState} from 'react';
-import {useSignInWithEmailAndPassword} from 'react-firebase-hooks/auth';
-import {auth} from '../firebase';
-import {Link, Navigate, useNavigate} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Link, Navigate} from 'react-router-dom';
 import {IUserData} from '../Types';
 import {Button, Form, Input} from 'antd';
-import {getLinks, login, register} from '../thunks/index';
+import {getLinks, login} from '../thunks';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../store/store';
 
@@ -14,7 +12,6 @@ const SignIn:React.FC = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector((state: RootState) => state.AuthReducer.isAuth);
   const error = useSelector((state: RootState) => state.AuthReducer.error);
-  const push = useNavigate();
 
   const links = useSelector((state: RootState) => state.Reducer.links);
 

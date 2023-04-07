@@ -1,9 +1,6 @@
-import React, {FC, useEffect, useState} from 'react';
-import {collection, getDocs, deleteDoc, setDoc, query, doc,} from 'firebase/firestore';
-import {auth, db} from '../firebase';
-import {InitialShortedLinks, IShortedLinks, IUserData} from '../Types';
+import React, {useEffect, useState} from 'react';
+import {IShortedLinks} from '../Types';
 import {Button, Input, Space} from 'antd';
-import {useAuthState} from 'react-firebase-hooks/auth';
 import {useParams} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../store/store';
@@ -19,23 +16,8 @@ const Profile:React.FC = () => {
     origin: '',
     hash: '',
   });
-  const {id} = useParams() as any;
-  const [linksList, setLinksList] = useState<IShortedLinks[]>(InitialShortedLinks);
-  const [shortID,setShortID] = useState('');
-  const [user, loading, error] = useAuthState(auth);
-  const [userEmail, setUserEmail] = useState(id);
   const [newLink, setNewLink] = useState('');
 
-  const hashCode = () => {
-    let code  = '';
-    const symbols = '0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
-    const max_position = symbols.length - 1;
-    for( let i = 0; i < 5; ++i ) {
-      const position = Math.floor ( Math.random() * max_position );
-      code = code + symbols.substring(position, position + 1);
-    }
-    return setShortID(code);
-  };
 
   const handleDelete = (id:string) => {
     dispatch(deleteLink(id));
@@ -51,7 +33,6 @@ const Profile:React.FC = () => {
   };
 
   const handleAdd = (link: string) => {
-    hashCode();
     dispatch(addLink(link));
   };
 
@@ -67,7 +48,7 @@ const Profile:React.FC = () => {
     <>
       <Space.Compact>
         <Input addonBefore="Link:" placeholder="Введите ссылку..." value={linksData.origin} onChange={(e) => setLinksData({...linksData, origin: e.target.value})} allowClear />
-        <Button type="primary" onClick={(e) => {
+        <Button type="primary" onClick={() => {
           handleAdd(linksData.origin);}}>Сократить</Button>
       </Space.Compact>
       <table className="table">

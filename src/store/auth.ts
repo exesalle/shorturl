@@ -1,4 +1,4 @@
-import {ActionTypes, IShortedLinks} from '../Types';
+import {ActionTypes} from '../Types';
 
 const initialState = {
   isRegister: false,
