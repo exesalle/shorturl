@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {IShortedLinks} from '../Types';
 import {Button, Input, Space} from 'antd';
-import {useParams} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../store/store';
 import {getLinks, addLink, deleteLink, updateHash, updateLink} from '../thunks';
