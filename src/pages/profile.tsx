@@ -2,7 +2,6 @@ import React, {FC, useEffect, useState} from 'react';
 import {collection, getDocs, deleteDoc, setDoc, query, doc,} from 'firebase/firestore';
 import {auth, db} from '../firebase';
 import {InitialShortedLinks, IShortedLinks, IUserData} from '../Types';
-import {CurrentUser} from '../state/useAuthState';
 import {Button, Input, Space} from 'antd';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useParams} from 'react-router-dom';
