@@ -3,39 +3,34 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import {IUserData} from '../Types';
 import {auth} from '../firebase';
 import {createUserWithEmailAndPassword, updateProfile} from 'firebase/auth';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link, Navigate, useNavigate} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {register} from '../thunks/index';
+import {RootState} from '../store/store';
 
-const onFinish = (values: any) => {
-  console.log('Success:', values);
-};
-
-
- 
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo);
-};
-const SignUp:FC = () => {
+const SignUp:React.FC = () => {
 
   const [userData,setUserData] = useState<IUserData>({
-    name:'',
-    email: '',
+    login: '',
     password: '',
   } as IUserData);
-  const [error,setError] = useState('');
-  const push = useNavigate();
-  const handleRegister = async () => {
-    try {
-      const res = await createUserWithEmailAndPassword(auth, userData.email, userData.password);
-      await updateProfile(res.user,{
-        displayName: userData.name
-      });
-      push('/profile'+userData.email);
-    } catch (error:any){
-      error.message && setError(error.message);
-    }
+
+
+  const dispatch = useDispatch();
+  const isReg = useSelector((state: RootState) => state.AuthReducer.isRegister);
+  const error = useSelector((state: RootState) => state.AuthReducer.error);
+
+  const handleSubmit = () => {
+    const payload = {
+      login:userData.login,
+      password:userData.password
+    };
+    return dispatch(register(payload));
   };
 
-  return (
+  return isReg ? (
+    <Navigate to="/login" />
+  ) : (
     <>
       Регистрация
       <Form
@@ -44,28 +39,16 @@ const SignUp:FC = () => {
         wrapperCol={{ span: 16 }}
         style={{ maxWidth: 600 }}
         initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-
         <Form.Item
-          label="Name"
-          name="name"
-          rules={[{ required: true, message: 'Please input your name!' }]}
+          label="login"
+          name="login"
+          rules={[{ required: true, message: 'Please input your login!' }]}
         >
           <Input
-            value={userData.name}
-            onChange={(e) => setUserData({...userData, name: e.target.value})}/>
-        </Form.Item>
-        <Form.Item
-          label="Email"
-          name="email"
-          rules={[{ required: true, message: 'Please input your username!' }]}
-        >
-          <Input
-            value={userData.email}
-            onChange={(e) => setUserData({...userData, email: e.target.value})}/>
+            value={userData.login}
+            onChange={(e) => setUserData({...userData, login: e.target.value})}/>
         </Form.Item>
 
         <Form.Item
@@ -75,12 +58,12 @@ const SignUp:FC = () => {
         >
           <Input.Password
             value={userData.password}
-            onChange={(e) => setUserData({...userData, password: e.target.value})}/>
+            onChange={(e) => setUserData({...userData,password: e.target.value})}/>
         </Form.Item>
 
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit" onClick={handleRegister}>
+          <Button type="primary" onClick={handleSubmit}>
             Submit
           </Button>
         </Form.Item>

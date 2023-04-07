@@ -7,19 +7,18 @@ import {Button, Input, Space} from 'antd';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useParams} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchLinks} from '../thunks';
 import {RootState} from '../store/store';
+import {getLinks, addLink, deleteLink, updateHash, updateLink} from '../thunks';
 
 const Profile:React.FC = () => {
-
 
   const dispatch = useDispatch();
   const links = useSelector((state: RootState) => state.Reducer.links);
 
   const [linksData, setLinksData] = useState<IShortedLinks>({
-    id: 1,
-    link: '',
-    short: '',
+    _id: '',
+    origin: '',
+    hash: '',
   });
   const {id} = useParams() as any;
   const [linksList, setLinksList] = useState<IShortedLinks[]>(InitialShortedLinks);
@@ -39,58 +38,38 @@ const Profile:React.FC = () => {
     return setShortID(code);
   };
 
-  const deleteLink = (link:string) => {
-    deleteDoc(doc(db, userEmail+'', link+''));
-    displayLinks();
+  const handleDelete = (id:string) => {
+    dispatch(deleteLink(id));
   };
 
-
-
-
-  const addLink = async (userEmail:string, shortID:string, link: string) => {
-    await hashCode();
-    try {
-      await setDoc(doc(db, userEmail, shortID), {
-        id: Date.now(),
-        link: link,
-        short: shortID
-      });
-      await setDoc(doc(db, 'links', shortID), {
-        id: Date.now(),
-        link: link,
-        short: shortID
-      });
-
-    } catch (e) {
-      console.log(e);
-    }
+  const handleUpdateHash = (id:string) => {
+    dispatch(updateHash(id));
+    dispatch(getLinks());
   };
 
-  const displayLinks = async () => {
-    const linksCollection = query(collection(db, userEmail+''));
-    const linksSnapshot = await getDocs(linksCollection);
-    const links: any[] = [];
-    await linksSnapshot.forEach((doc:any) => {
-      links.push(doc.data());
-    });
-    setLinksList(links);
+  const handleUpdateLink = (id: string, link:string) => {
+    dispatch(updateLink(id, link));
   };
+
+  const handleAdd = (link: string) => {
+    hashCode();
+    dispatch(addLink(link));
+  };
+
 
 
   useEffect(() => {
     return () => {
-      dispatch(fetchLinks());
+      dispatch(getLinks());
     };
   }, []);
 
-
   return (
     <>
-      <CurrentUser/>
       <Space.Compact>
-        <Input addonBefore="Link:" placeholder="Введите ссылку..." value={linksData.link} onChange={(e) => setLinksData({...linksData, link: e.target.value})} allowClear />
+        <Input addonBefore="Link:" placeholder="Введите ссылку..." value={linksData.origin} onChange={(e) => setLinksData({...linksData, origin: e.target.value})} allowClear />
         <Button type="primary" onClick={(e) => {
-          addLink(id, 'kjjjj',linksData.link);}}>Сократить</Button>
+          handleAdd(linksData.origin);}}>Сократить</Button>
       </Space.Compact>
       <table className="table">
         <tr>
@@ -99,14 +78,15 @@ const Profile:React.FC = () => {
           <th>Редактировать</th>
         </tr>
         {links.map(el =>
-          <tr key={el.id}>
-            <td>{el.link}</td>
-            <td>localhost:3000/{el.short}</td>
+          <tr key={el._id}>
+            <td>{el.origin}</td>
+            <td>localhost:3000/{el.hash}</td>
             <td>
               <Space.Compact>
                 <Input addonBefore="Новая ссылка:" placeholder="Введите новую ссылку..." onChange={(e) => setNewLink( e.target.value)} allowClear />
-                <Button type="primary">Изменить</Button></Space.Compact></td>
-            <td><Button type="primary" onClick={() => {deleteLink(el.short);}}> Удалить</Button></td>
+                <Button type="primary" onClick={() => {handleUpdateLink(el._id, newLink);}}>Изменить</Button></Space.Compact></td>
+            <td><Button type="primary" onClick={() => {handleUpdateHash(el._id);}}>Обновить HASH</Button></td>
+            <td><Button type="primary" onClick={() => {handleDelete(el._id);}}> Удалить</Button></td>
           </tr>)}
       </table>
     </>

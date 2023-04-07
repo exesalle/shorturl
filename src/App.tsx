@@ -16,7 +16,7 @@ function App() {
           <Route index element={<Home/>} />
           <Route path="registration" element={<Registration/>}/>
           <Route path="login" element={<Login/>}/>
-          <Route path="profile/:id" element={<Profile/>}/>
+          <Route path="profile" element={<Profile/>}/>
           <Route path="/:id" element={<ShortedLink/>} />
         </Routes>
       </div>
