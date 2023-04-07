@@ -39,7 +39,7 @@ const SignIn:React.FC = () => {
   }, []);
 
   return isAuth ? (
-    <Link to="/profile"/>
+    <Navigate to="/profile"/>
   ) : (
     <>Вход
 
