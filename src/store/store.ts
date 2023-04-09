@@ -2,12 +2,9 @@ import { combineReducers, legacy_createStore as createStore, applyMiddleware } f
 import { Reducer } from './reducers/reducer';
 import thunk from 'redux-thunk';
 import {AuthReducer} from './reducers/authReducer';
-import {RedirectReducer} from './reducers/redirectReducer';
-
 const rootReducer = combineReducers({
   Reducer,
-  AuthReducer,
-  Redirect: RedirectReducer
+  AuthReducer
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));

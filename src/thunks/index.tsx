@@ -12,7 +12,6 @@ import {
   updateHash_success,
   updateLink_success
 } from '../store/reducers/reducer';
-import {redirectLink_success} from '../store/reducers/redirectReducer';
 export const register = (payload:any):any => {
   return function(dispatch: any) {
     axios
@@ -89,10 +88,3 @@ export const updateLink = (id:string, link:string):any => {
   };
 };
 
-export const redirectLink = (hash:string):any => {
-  return function (dispatch: any) {
-    fetch('http://localhost:5000/api/v1/short/'+hash)
-      .then(res => res.json())
-      .then(json => dispatch(redirectLink_success(json)));
-  };
-};
