@@ -1,4 +1,4 @@
-import {ActionTypes, IShortedLinks} from '../Types';
+import {ActionTypes, IShortedLinks} from '../../Types';
 
 type StateType = {
   links: IShortedLinks[]
@@ -28,14 +28,9 @@ export const Reducer = (state = initialState, action: { type: ActionTypes, paylo
     };
   }
   case ActionTypes.DELETE_LINK: {
-    return {
-      ...state,
-      links: [
-        ...state.links,
-        action.payload
-      ]
-    };
+    return { ...state };
   }
+
 
 
   default:

@@ -24,7 +24,6 @@ const Profile:React.FC = () => {
 
   const handleUpdateHash = (id:string) => {
     dispatch(updateHash(id));
-    dispatch(getLinks());
   };
 
   const handleUpdateLink = (id: string, link:string) => {

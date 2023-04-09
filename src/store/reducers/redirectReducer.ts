@@ -1,10 +1,10 @@
-import {ActionTypes} from '../Types';
+import {ActionTypes} from '../../Types';
 
 const initialState = {
   link: null,
 };
 
-export const Redirect = (state = initialState, action: { type: ActionTypes, payload: any }) => {
+export const RedirectReducer = (state = initialState, action: { type: ActionTypes, payload: any }) => {
   switch (action.type) {
   case ActionTypes.REDIRECT_LINK:
     return { ...state, link: action.payload };
