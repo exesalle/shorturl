@@ -61,10 +61,11 @@ export const addLink = (link:string):any => {
 
 export const deleteLink = (id:string):any => {
   return async function (dispatch: any) {
-    await axios
-      .delete('http://localhost:5000/api/v1/short/' + id)
-      .then((res) => dispatch(deleteLink_success(res)));
-    dispatch(getLinks());
+    const res = await axios.delete('http://localhost:5000/api/v1/short/' + id);
+    if (res.status === 200) {
+      dispatch(deleteLink_success(res));
+      dispatch(getLinks());
+    }
   };
 };
 
@@ -79,12 +80,13 @@ export const updateHash = (id:string):any => {
 
 export const updateLink = (id:string, link:string):any => {
   return async function (dispatch: any) {
-    await axios
-      .put('http://localhost:5000/api/v1/short/update-origin/'+id, {
-        origin: link
-      })
-      .then((res) => dispatch(updateLink_success(res)));
-    dispatch(getLinks());
+    const res = await axios.put('http://localhost:5000/api/v1/short/update-origin/'+id, {
+      origin: link
+    });
+    if (res.status === 200) {
+      dispatch(updateLink_success(res));
+      dispatch(getLinks());
+    }
   };
 };
 
